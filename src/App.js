@@ -1,5 +1,5 @@
 import React from 'react'
-// import * as BooksAPI from './BooksAPI'
+
 import './App.css'
 import  BookList from './BookList'
 import { Route } from 'react-router-dom'
@@ -45,17 +45,15 @@ class BooksApp extends React.Component {
                     <BookList listTitle={ListTitle.currentlyReading} books={this.state.books} />
                     <BookList listTitle={ListTitle.wantReads} books={this.state.books}/>
                     <BookList listTitle={ListTitle.read} books={this.state.books}/>
-
                     <div className="open-search">
                         <button onClick={this.fabClickHandler} />
                     </div>
-
                 </div>
             )}/>
 
-            <Route path='/search' render={({ history }) => (
+            <Route exact path='/search' render={({ history }) => (
                 <SearchPage
-                    onCreateContact={(selectedBook) => {
+                    onBookSelected={(selectedBook) => {
                         this.addBook(selectedBook);
                         history.push('/')
                     }}

@@ -3,6 +3,11 @@ import PropTypes from 'prop-types';
 
 class BookList extends React.Component{
 
+    static propTypes = {
+        listTitle: PropTypes.string.isRequired,
+        books: PropTypes.array.isRequired,
+    };
+
     state = {
     };
 
@@ -17,10 +22,6 @@ class BookList extends React.Component{
     }
 }
 
-BookList.propTypes = {
-    listTitle: PropTypes.string.isRequired,
-    books: PropTypes.array.isRequired,
-};
 
 
 export default BookList;
