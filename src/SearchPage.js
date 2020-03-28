@@ -22,7 +22,10 @@ class SearchPage extends React.Component{
         const {  value } = event.target;
         this.setState( prevStat => ({
             query: value,
+            booksFound: []
         }));
+
+
 
         BooksAPI.search(value).then( results => {
             if (results && results.length > 0 ){
@@ -33,9 +36,6 @@ class SearchPage extends React.Component{
                 ))
             } else {
                 console.log(TAG + "0 results with query string");
-                this.setState( prevState =>({
-                    booksFound: []
-                }))
             }
 
         });
@@ -56,16 +56,20 @@ class SearchPage extends React.Component{
                 {
                     //TODO: manage the case if bookFound is 0
                 }
-                {
+                <div className="search-books-results">
+                    <ol className="books-grid">
+                        {
+                            (booksFound !== undefined && booksFound.length) > 0 ?
 
-                    (booksFound !== undefined && booksFound.length) > 0 ?
-                        booksFound.map( bookItem => (
-                            <BookItem book={ bookItem }/>
-                        ))
-                    :
-                        ''
-                }
+                                    booksFound.map( bookItem => (
+                                             <BookItem book={ bookItem }/>
+                                    ))
 
+                            :
+                                ''
+                        }
+                    </ol>
+                </div>
             </div>
         );
     }
