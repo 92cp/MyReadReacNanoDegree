@@ -1,7 +1,11 @@
 import React from 'react'
 // import * as BooksAPI from './BooksAPI'
 import './App.css'
-import  ListBooks from './ListBooks'
+import  BookList from './BookList'
+import { Route } from 'react-router-dom'
+import SearchPage from "./SearchPage";
+import {withRouter} from 'react-router-dom';
+import { Link } from 'react-router-dom'
 
 const ListTitle = {
     currentlyReading: 'Currently Reading',
@@ -9,40 +13,58 @@ const ListTitle = {
     read: 'Read',
 };
 
-const TAG = "[ APP ] :";
+const TAG = "[ APP ]: ";
 
 class BooksApp extends React.Component {
   state = {
-    /**
-     * TODO: Instead of using this state variable to keep track of which page
-     * we're on, use the URL in the browser's address bar. This will ensure that
-     * users can use the browser's back and forward buttons to navigate between
-     * pages, as well as provide a good URL they can bookmark and share.
-     */
-    showSearchPage: false
+      books: []
   };
 
-  fabButtonHandler = () => {
-      console.log("Fab Button handler");
+  addBook = (book) => {
+      console.log(TAG + "addBook");
   };
 
+  /*componentDidMount() {
+     ContactsAPI.getAll().then((contacts) => {
+            this.setState({ contacts })
+        })
+  }*/
+  fabClickHandler = () => {
+      console.log(TAG + "fabClickHandler Fired!");
+      this.props.history.push("/search");
+  };
   render() {
     return (
         <div className="app">
-            <div className="list-books">
-                <div className="list-books-title">
-                    <h1>MyReads</h1>
+
+            <Route exact path='/' render={() => (
+                <div className="list-books">
+                    <div className="list-books-title">
+                        <h1>MyReads</h1>
+                    </div>
+                    <BookList listTitle={ListTitle.currentlyReading} books={this.state.books} />
+                    <BookList listTitle={ListTitle.wantReads} books={this.state.books}/>
+                    <BookList listTitle={ListTitle.read} books={this.state.books}/>
+
+                    <div className="open-search">
+                        <button onClick={this.fabClickHandler} />
+                    </div>
+
                 </div>
-                <ListBooks listTitle={ListTitle.currentlyReading}/>
-                <ListBooks listTitle={ListTitle.wantReads}/>
-                <ListBooks listTitle={ListTitle.read}/>
-            </div>
-            <div className="open-search">
-                <button onClick={this.fabButtonHandler}>Add a book</button>
-            </div>
+            )}/>
+
+            <Route path='/search' render={({ history }) => (
+                <SearchPage
+                    onCreateContact={(selectedBook) => {
+                        this.addBook(selectedBook);
+                        history.push('/')
+                    }}
+                />
+            )}/>
+
         </div>
     )
   }
 }
 
-export default BooksApp
+export default withRouter(BooksApp)
