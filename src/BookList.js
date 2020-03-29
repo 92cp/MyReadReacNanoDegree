@@ -13,10 +13,6 @@ class BookList extends React.Component{
         onBookMoved:PropTypes.func.isRequired
     };
 
-    componentDidMount() {
-
-    }
-
     bookMovedHandler = (bookAsObject) => {
         console.log(TAG + "bookMovedHandler Fired!" + JSON.stringify(bookAsObject));
         this.props.onBookMoved(bookAsObject);
@@ -33,7 +29,7 @@ class BookList extends React.Component{
                         {
                             books.length > 0 ?
                                 books.map( b => (
-                                    <BookItem book={b} optionElements={optionElements} onBookMoved={this.bookMovedHandler}/>
+                                    <BookItem key={b.id} book={b} optionElements={optionElements} onBookMoved={this.bookMovedHandler}/>
                                 ))
                             :
                                 ""

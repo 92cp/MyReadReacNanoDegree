@@ -5,10 +5,10 @@ class DinamicSelect extends React.Component{
 
     static propTypes = {
         elements: PropTypes.array.isRequired,
+        shelf: PropTypes.string.isRequired,
+        onSelectedElement: PropTypes.func.isRequired
     };
 
-    state = {
-    };
 
     valueChangeHandler = (event) => {
         console.log(TAG + "valueChangeHandler Fired!");
@@ -16,16 +16,19 @@ class DinamicSelect extends React.Component{
     };
 
     render() {
-        const { elements } = this.props;
+        const { elements, shelf} = this.props;
         let options = elements.map( (data) => (
-            <option key={data.id} value={data.value}>
+            <option
+                key={data.id}
+                value={data.value}
+                selected={shelf === data.value}>
                 {data.string}
             </option>
         ));
         return (
             <div className="book-shelf-changer" onChange={this.valueChangeHandler}>
                 <select name="actions">
-                    <option key="move" value="move" selected disabled>Move to...</option>
+                    <option key="move" value="move" disabled>Move to...</option>
                     {options}
                 </select>
             </div>

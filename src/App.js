@@ -24,7 +24,6 @@ const TAG = "[ APP ]: ";
 class BooksApp extends React.Component {
 
     state = {
-        booksReferences: [],
         currentlyReadingBooks:[],
         wantToReadBooks:[],
         readBooks: []
@@ -32,10 +31,6 @@ class BooksApp extends React.Component {
 
     addBook = (book) => {
         console.log(TAG + "addBook" + JSON.stringify(book));
-        this.setState( prevState => ({
-            booksReferences: [...prevState.booksReferences, book ]
-        }));
-
         BooksAPI.get(book.bookId).then( b => {
            console.log(TAG + "Book from ID: " + JSON.stringify(b));
            if (b !== undefined){
@@ -85,8 +80,6 @@ class BooksApp extends React.Component {
                 });
             });
         })
-
-
     }
 
     fabClickHandler = () => {
