@@ -40,8 +40,13 @@ class BooksApp extends React.Component {
            console.log(TAG + "Book from ID: " + JSON.stringify(b));
            if (b !== undefined){
                 this.addBookInCorrectShelf(b, book.section);
+                BooksAPI.update(b, book.section).then( result => {
+                    console.log(TAG + "Book update successfully!");
+                })
            }
         });
+
+
     };
 
     addBookInCorrectShelf = (book, shelfDestination) => {
@@ -74,7 +79,7 @@ class BooksApp extends React.Component {
             Object.keys(books).forEach( (key) => {
                 books[key].forEach(entry => {
                     BooksAPI.get(entry).then( result => {
-                        console.log(TAG + "key is: " + key +"result " + JSON.stringify(result));
+                        //console.log(TAG + "key is: " + key +"result " + JSON.stringify(result));
                         this.addBookInCorrectShelf( result, key);
                     })
                 });

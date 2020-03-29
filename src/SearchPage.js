@@ -26,13 +26,13 @@ class SearchPage extends React.Component{
             booksFound: []
         }));
 
+        console.log(TAG + JSON.stringify(this.state.booksFound));
+
         BooksAPI.search(value).then( results => {
             if (results && results.length > 0 ){
-                results.map( item => (
-                    this.setState( prevState => ({
-                        booksFound:[ ...prevState.booksFound, item]
-                    }))
-                ))
+                this.setState( prevState => ({
+                    booksFound: results
+                }))
             } else {
                 console.log(TAG + "0 results with query string");
             }
