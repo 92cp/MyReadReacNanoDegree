@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
-import BookList from "./BookList";
 import BookItem from "./BookItem";
 
 const TAG = "[ SEARCH-PAGE ]: ";
@@ -83,9 +82,6 @@ class SearchPage extends React.Component{
             </div>
         );
     }
-
-
 }
-
 
 export default SearchPage;

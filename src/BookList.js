@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import * as BooksAPI from './BooksAPI'
 import BookItem from "./BookItem";
 
 const TAG = "[ BOOK-LIST ]: ";
@@ -40,7 +39,5 @@ class BookList extends React.Component{
         );
     }
 }
-
-
 
 export default BookList;
