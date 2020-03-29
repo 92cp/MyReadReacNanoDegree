@@ -97,18 +97,23 @@ class BooksApp extends React.Component {
     bookMovedHandler = (book) => {
         console.log(TAG + "handler moved on App.js fired!");
 
-        /*this.setState( prevState => ({
-            currentlyReadingBooks: prevState.currentlyReading !== undefined ? prevState.currentlyReading.filter( item => item.id !== book.id) : [],
-            wantToReadBooks: prevState.wantToReadBooks !== undefined ? prevState.wantToReadBooks.filter( item => item.id !== book.id) : [],
-            readBooks:prevState.readBooks !== undefined ? prevState.readBooks.filter( item => item.id !== book.id) : []
+        this.setState( prevState => ({
+            currentlyReadingBooks: prevState.currentlyReadingBooks.filter( (item) => item.id !== book.bookId),
+            wantToReadBooks: prevState.wantToReadBooks.filter( (item) => item.id !== book.bookId),
+            readBooks: prevState.readBooks.filter( (item) => item.id !== book.bookId)
         }));
 
         BooksAPI.get(book.bookId).then( b => {
             console.log(TAG + "Book from ID: " + JSON.stringify(b));
             if (b !== undefined){
                 this.addBookInCorrectShelf(b, book.section);
+                BooksAPI.update(b, book.section).then(result => {
+                    console.log(TAG + " database update successfully!");
+                })
             }
-        });*/
+        });
+
+
     };
 
     render() {
