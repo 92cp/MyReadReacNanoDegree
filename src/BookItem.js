@@ -5,6 +5,7 @@ import DinamicSelect from "./DinamicSelect";
 const TAG = "[ BOOK-ITEM ]: ";
 
 const BookItem = props => {
+    let bacgroundImage = props.book.imageLinks !== undefined ? props.book.imageLinks.thumbnail : "https://i.pinimg.com/236x/c1/a9/35/c1a9352469f464ac420cc8a8078a4795.jpg";
     return (
 
         <li key={props.book.id}>
@@ -13,7 +14,7 @@ const BookItem = props => {
                     <div className="book-cover" style={{
                         width: 128,
                         height: 193,
-                        backgroundImage: "url(\'" + props.book.imageLinks.thumbnail +"\')" }}>
+                        backgroundImage: "url(\'" + bacgroundImage +"\')" }}>
                     </div>
                     <DinamicSelect onSelectedElement={ (element) => (
                         props.onBookMoved({
