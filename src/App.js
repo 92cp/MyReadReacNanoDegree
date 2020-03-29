@@ -110,6 +110,7 @@ class BooksApp extends React.Component {
     };
 
     render() {
+        const concat = (...arrays) => [].concat(...arrays.filter(Array.isArray));
         return (
             <div className="app">
 
@@ -141,6 +142,7 @@ class BooksApp extends React.Component {
 
                 <Route exact path='/search' render={({ history }) => (
                     <SearchPage
+                        bookInShelf={concat(this.state.readBooks, this.state.wantToReadBooks, this.state.currentlyReadingBooks)}
                         optionElements={options}
                         onBookSelected={(selectedBook) => {
                             this.addBook(selectedBook);

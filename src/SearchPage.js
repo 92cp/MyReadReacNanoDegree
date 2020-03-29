@@ -11,7 +11,8 @@ class SearchPage extends React.Component{
 
     static propTypes = {
         onBookSelected: PropTypes.func.isRequired,
-        optionElements: PropTypes.array.isRequired
+        optionElements: PropTypes.array.isRequired,
+        bookInShelf: PropTypes.array.isRequired
     };
 
     state = {
@@ -20,6 +21,11 @@ class SearchPage extends React.Component{
     };
 
     inputChangeHandler = (event) => {
+        const mergeById = (a1, a2) =>
+            a1.map(itm => ({
+                ...a2.find((item) => (item.id === itm.id) && item),
+                ...itm
+        }));
         const {  value } = event.target;
         this.setState( prevStat => ({
             query: value,
@@ -30,8 +36,9 @@ class SearchPage extends React.Component{
 
         BooksAPI.search(value).then( results => {
             if (results && results.length > 0 ){
+                let parsedResult = mergeById(results, this.props.bookInShelf);
                 this.setState( prevState => ({
-                    booksFound: results
+                    booksFound: parsedResult
                 }))
             } else {
                 console.log(TAG + "0 results with query string");
@@ -56,15 +63,16 @@ class SearchPage extends React.Component{
                         <input onChange={this.inputChangeHandler} value={query} type="text" placeholder="Search by title or author"/>
                     </div>
                 </div>
-                {
-                    //TODO: manage the case if bookFound is 0
-                }
                 <div className="search-books-results">
                     <ol className="books-grid">
                         {
                             (booksFound !== undefined && booksFound.length) > 0 ?
                                     booksFound.map( bookItem => (
-                                             <BookItem onBookMoved={this.bookMovedHandler} book={ bookItem } optionElements={optionElements}/>
+                                             <BookItem
+                                                 key={bookItem.id}
+                                                 onBookMoved={this.bookMovedHandler}
+                                                 book={ bookItem }
+                                                 optionElements={optionElements}/>
                                     ))
 
                             :

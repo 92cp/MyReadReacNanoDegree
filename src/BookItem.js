@@ -24,7 +24,7 @@ const BookItem = props => {
                             })
                         )}
                         elements={props.optionElements}
-                        shelf={props.book.shelf}
+                        shelf={props.book.shelf ? props.book.shelf : 'none'}
                     />
                 </div>
                 <div className="book-title">{props.book.title}</div>
