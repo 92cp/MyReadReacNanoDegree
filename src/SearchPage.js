@@ -10,7 +10,8 @@ const TAG = "[ SEARCH-PAGE ]: ";
 class SearchPage extends React.Component{
 
     static propTypes = {
-        onBookSelected: PropTypes.func.isRequired
+        onBookSelected: PropTypes.func.isRequired,
+        optionElements: PropTypes.array.isRequired
     };
 
     state = {
@@ -25,8 +26,6 @@ class SearchPage extends React.Component{
             booksFound: []
         }));
 
-
-
         BooksAPI.search(value).then( results => {
             if (results && results.length > 0 ){
                 results.map( item => (
@@ -39,11 +38,15 @@ class SearchPage extends React.Component{
             }
 
         });
+    };
 
+    bookMovedHandler = ( bookObjec ) => {
+        console.log(TAG + "bookMovedHandler FIRED!" + JSON.stringify(bookObjec));
+        this.props.onBookSelected(bookObjec);
     };
 
     render() {
-        const { onBookSelected } = this.props;
+        const { optionElements } = this.props;
         const { booksFound, query } = this.state;
         return (
             <div className="search-books">
@@ -60,9 +63,8 @@ class SearchPage extends React.Component{
                     <ol className="books-grid">
                         {
                             (booksFound !== undefined && booksFound.length) > 0 ?
-
                                     booksFound.map( bookItem => (
-                                             <BookItem book={ bookItem }/>
+                                             <BookItem onBookMoved={this.bookMovedHandler} book={ bookItem } optionElements={optionElements}/>
                                     ))
 
                             :
