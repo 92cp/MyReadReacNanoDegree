@@ -20,14 +20,14 @@ class DinamicSelect extends React.Component{
         let options = elements.map( (data) => (
             <option
                 key={data.id}
-                value={data.value}
-                selected={shelf === data.value}>
+                value={data.value}>
                 {data.string}
             </option>
         ));
+        let currentValue = shelf || 'none';
         return (
-            <div className="book-shelf-changer" onChange={this.valueChangeHandler}>
-                <select name="actions">
+            <div className="book-shelf-changer">
+                <select name="actions"  onChange={this.valueChangeHandler}  value={currentValue} >
                     <option key="move" value="move" disabled>Move to...</option>
                     {options}
                 </select>
