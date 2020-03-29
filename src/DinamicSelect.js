@@ -25,7 +25,7 @@ class DinamicSelect extends React.Component{
         return (
             <div className="book-shelf-changer" onChange={this.valueChangeHandler}>
                 <select name="actions">
-                    <option key="move" value="move" disabled>Move to...</option>
+                    <option key="move" value="move" selected disabled>Move to...</option>
                     {options}
                 </select>
             </div>
