@@ -2,8 +2,6 @@ import React from "react";
 import PropTypes from 'prop-types';
 import DinamicSelect from "./DinamicSelect";
 
-const TAG = "[ BOOK-ITEM ]: ";
-
 const BookItem = props => {
     let bacgroundImage = props.book.imageLinks !== undefined ? props.book.imageLinks.thumbnail : "https://i.pinimg.com/236x/c1/a9/35/c1a9352469f464ac420cc8a8078a4795.jpg";
     return (
@@ -28,7 +26,7 @@ const BookItem = props => {
                     />
                 </div>
                 <div className="book-title">{props.book.title}</div>
-                <div className="book-authors">{props.book.authors}</div>
+                <div className="book-authors">{props.book.authors !== undefined ? props.book.authors.join(', ') :""}</div>
             </div>
         </li>
 

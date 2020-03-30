@@ -24,17 +24,21 @@ const TAG = "[ APP ]: ";
 class BooksApp extends React.Component {
 
     state = {
-        currentlyReadingBooks:[],
-        wantToReadBooks:[],
-        readBooks: []
+        currentlyReading:[],
+        wantToRead:[],
+        read: []
     };
 
     addBook = (book) => {
         console.log(TAG + "addBook" + JSON.stringify(book));
-        BooksAPI.get(book.bookId).then( b => {
+        let shelf = book.section !== undefined ? book.section : book.shelf;
+        let bookId = book.bookId !== undefined ? book.bookId : book.id;
+        BooksAPI.get(bookId).then( b => {
            console.log(TAG + "Book from ID: " + JSON.stringify(b));
            if (b !== undefined){
-                this.addBookInCorrectShelf(b, book.section);
+                this.setState(prevStat =>({
+                        [shelf]: prevStat[shelf].concat(b)
+                }));
                 BooksAPI.update(b, book.section).then( result => {
                     console.log(TAG + "Book update successfully!");
                 })
@@ -50,7 +54,6 @@ class BooksApp extends React.Component {
                 this.setState(prevState => ({
                     currentlyReadingBooks: prevState.currentlyReadingBooks.concat(book)
                 }));
-
                 break;
             case options[1].value:
                 this.setState(prevState => ({
@@ -66,20 +69,18 @@ class BooksApp extends React.Component {
             case options[3].value:
                 console.log(TAG + " section is \"None\"....no action required!");
                 break;
+            default:
+                console.log(TAG + "shelf not recognized!");
+                break;
         }
     };
 
     componentDidMount() {
-        BooksAPI.update("", options[0].value).then(books => {
-            Object.keys(books).forEach( (key) => {
-                books[key].forEach(entry => {
-                    BooksAPI.get(entry).then( result => {
-                        //console.log(TAG + "key is: " + key +"result " + JSON.stringify(result));
-                        this.addBookInCorrectShelf( result, key);
-                    })
-                });
-            });
-        })
+        BooksAPI.getAll().then((books) =>{
+            books.map((item) => (
+                this.addBook(item)
+            ))
+        });
     }
 
     fabClickHandler = () => {
@@ -91,17 +92,19 @@ class BooksApp extends React.Component {
         console.log(TAG + "handler moved on App.js fired!");
 
         this.setState( prevState => ({
-            currentlyReadingBooks: prevState.currentlyReadingBooks.filter( (item) => item.id !== book.bookId),
-            wantToReadBooks: prevState.wantToReadBooks.filter( (item) => item.id !== book.bookId),
-            readBooks: prevState.readBooks.filter( (item) => item.id !== book.bookId)
+            currentlyReading: prevState.currentlyReading.filter( (item) => item.id !== book.bookId),
+            wantToRead: prevState.wantToRead.filter( (item) => item.id !== book.bookId),
+            read: prevState.read.filter( (item) => item.id !== book.bookId)
         }));
 
         BooksAPI.get(book.bookId).then( b => {
             console.log(TAG + "Book from ID: " + JSON.stringify(b));
             if (b !== undefined){
-                this.addBookInCorrectShelf(b, book.section);
+
                 BooksAPI.update(b, book.section).then(result => {
                     console.log(TAG + " database update successfully!");
+                    b["shelf"] = book.section;
+                    this.addBook(b);
                 })
             }
         });
@@ -119,17 +122,17 @@ class BooksApp extends React.Component {
                         </div>
                         <BookList
                             listTitle={ListTitle.currentlyReading}
-                            books={this.state.currentlyReadingBooks}
+                            books={this.state.currentlyReading}
                             optionElements={options}
                             onBookMoved={this.bookMovedHandler}/>
                         <BookList
                             listTitle={ListTitle.wantReads}
-                            books={this.state.wantToReadBooks}
+                            books={this.state.wantToRead}
                             optionElements={options}
                             onBookMoved={this.bookMovedHandler}/>
                         <BookList
                             listTitle={ListTitle.read}
-                            books={this.state.readBooks}
+                            books={this.state.read}
                             optionElements={options}
                             onBookMoved={this.bookMovedHandler}/>
                         <div className="open-search">
