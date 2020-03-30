@@ -143,7 +143,7 @@ class BooksApp extends React.Component {
 
                 <Route exact path='/search' render={({ history }) => (
                     <SearchPage
-                        bookInShelf={concat(this.state.readBooks, this.state.wantToReadBooks, this.state.currentlyReadingBooks)}
+                        bookInShelf={concat(this.state.read, this.state.wantToRead, this.state.currentlyReading)}
                         optionElements={options}
                         onBookSelected={(selectedBook) => {
                             this.addBook(selectedBook);
