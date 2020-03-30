@@ -33,46 +33,22 @@ class BooksApp extends React.Component {
         console.log(TAG + "addBook" + JSON.stringify(book));
         let shelf = book.section !== undefined ? book.section : book.shelf;
         let bookId = book.bookId !== undefined ? book.bookId : book.id;
-        BooksAPI.get(bookId).then( b => {
-           console.log(TAG + "Book from ID: " + JSON.stringify(b));
-           if (b !== undefined){
-                this.setState(prevStat =>({
+        if (shelf !== options[3].id){
+            BooksAPI.get(bookId).then( b => {
+                console.log(TAG + "Book from ID: " + JSON.stringify(b));
+                if (b !== undefined){
+                    this.setState(prevStat =>({
                         [shelf]: prevStat[shelf].concat(b)
-                }));
-                BooksAPI.update(b, book.section).then( result => {
-                    console.log(TAG + "Book update successfully!");
-                })
-           }
-        });
-
-
-    };
-
-    addBookInCorrectShelf = (book, shelfDestination) => {
-        switch (shelfDestination) {
-            case  options[0].value:
-                this.setState(prevState => ({
-                    currentlyReadingBooks: prevState.currentlyReadingBooks.concat(book)
-                }));
-                break;
-            case options[1].value:
-                this.setState(prevState => ({
-                    wantToReadBooks: prevState.wantToReadBooks.concat(book)
-                }));
-
-                break;
-            case options[2].value:
-                this.setState(prevState => ({
-                    readBooks: prevState.readBooks.concat(book)
-                }));
-                break;
-            case options[3].value:
-                console.log(TAG + " section is \"None\"....no action required!");
-                break;
-            default:
-                console.log(TAG + "shelf not recognized!");
-                break;
+                    }));
+                    BooksAPI.update(b, book.section).then( result => {
+                        console.log(TAG + "Book update successfully!");
+                    })
+                }
+            });
         }
+
+
+
     };
 
     componentDidMount() {
